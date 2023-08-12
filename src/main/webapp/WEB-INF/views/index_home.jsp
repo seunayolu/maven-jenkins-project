@@ -21,13 +21,13 @@
                                 <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span><span
                                     class="icon-bar"></span><span class="icon-bar"></span>
                             </button>
-                            <a class="navbar-brand" href="${contextPath}/index">VISUAL PATH</a>
-                            <i class="brand_network"><small><small>VProfile</small></small></i>
+                            <a class="navbar-brand" href="${contextPath}/index">DevOps ACAD</a>
+                            <i class="brand_network"><small><small>DWebapp</small></small></i>
                         </div>
                         <div class="navbar-collapse collapse">
                             <ul class="nav navbar-nav">
                                 <li><a href="#technologies">TECHNOLOGIES</a></li>
-                                <li><a href="#about">ABOUT</a></li>
+                                <!--<li><a href="#about">ABOUT</a></li> -->
                                 <li><a href="#contact">CONTACT</a></li>
                                 <li><a href="#">BLOG</a></li>
                             </ul>
@@ -79,7 +79,7 @@
     </div>
     <div class="w3-col l3 m6 w3-margin-bottom">
       <div class="w3-display-container">
-        <img src="${contextPath}/resources/Images/technologies/git.jpg" alt="DevOps" style="width:150px;height:150px">
+        <img src="${contextPath}/resources/Images/technologies/git.png" alt="DevOps" style="width:150px;height:150px">
       </div>
     </div>
     <div class="w3-col l3 m6 w3-margin-bottom">
@@ -97,7 +97,7 @@
     </div>
     <div class="w3-col l3 m6 w3-margin-bottom">
       <div class="w3-display-container">
-        <img src="${contextPath}/resources/Images/technologies/puppet.jpg" alt="DevOps" style="width:150px;height:150px">
+        <img src="${contextPath}/resources/Images/technologies/puppet.png" alt="DevOps" style="width:150px;height:150px">
       </div>
     </div>
     <div class="w3-col l3 m6 w3-margin-bottom">
@@ -112,22 +112,22 @@
     </div>
   </div>
 
-  <!-- About Section -->
+  <!-- About Section 
   <div class="container w3-padding-32" id="about">
     <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16" align="center">ABOUT</h3>
     <div class="w3-content" style="max-width:700px">
-	    <p style="text-align:justify;">VisualPath is an IT Educational Institute.Established in 2001,and Institute offers world class quality of education and wide range of courses.VisualPath Institute has a dedicated placement team to help students get job placement in various IT job roles with major companies.
+	    <p style="text-align:justify;"> Welcome to DevOps Academy.
 	    </p>
 	    <p><strong>Address:</strong>  Flat no: 205, 2nd Floor,NILGIRI Block,Aditya Encalve,Ameerpet, Hyderabad-16</p> 
 	    <p><strong>Ph No: </strong>  +91-9704455959,9618245689</p>
 		<p><strong>E-Mail ID :</strong>  visualpath999@gmail.com</p>
   	</div>
    </div>
-  
+     -->
   <!-- Contact Section -->
   <div class="container w3-padding-32" id="contact">
     <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16" align="center">CONTACT</h3>
-    <p>Lets get in touch and talk about your and our next project.</p>
+    <p>Lets get in touch and talk about your project.</p>
     <form action="/action_page.php" target="_blank">
       <input class="w3-input" type="text" placeholder="Name" required name="Name">
       <input class="w3-input w3-section" type="text" placeholder="Email" required name="Email">
@@ -145,7 +145,7 @@
 
 <!-- Footer -->
 <footer class="w3-center  w3-padding-16" style="background-color:#1C3B47 ">
-  <p style="color:#FFFFFF ">Copyright @2017 <a href="#"  target="_blank" class="w3-hover-text-green"> visualpathit.com</a></p>
+  <p style="color:#FFFFFF ">Copyright @2023 <a href="#"  target="_blank" class="w3-hover-text-green"> https://nas.io/devopsacad-cohort2</a></p>
 </footer>
 
 
