@@ -19,7 +19,7 @@ def checkstyle() {
 }
 
 def sonarAnalysis() {
-    withSonarQubeEnv('sonar') {
+    withSonarQubeEnv('sonarqube') {
         sh ''' ${ScannerHome}/bin/sonar-scanner -Dsonar.projectKey=devopsacad-docker \
             -Dsonar.projectName=devopsacad-docker \
             -Dsonar.projectVersion=1.1 \
