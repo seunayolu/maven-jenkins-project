@@ -1,0 +1,11 @@
+# remove .terrform folder
+
+.terraform
+
+# remove statefile
+
+*.tfstate
+*.tfstate.*
+
+# remove variables file
+

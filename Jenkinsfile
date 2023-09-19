@@ -69,23 +69,6 @@ pipeline {
                 }
             }
         }
-        stage('Sonar Analysis') {
-            environment {
-                ScannerHome = tool 'sonar4.7'
-            }
-            steps{
-                script {
-                    gv.sonarAnalysis()
-                }
-            }
-        }
-        stage('Quality Gate') {
-            steps {
-                script {
-                    gv.qualityGate()
-                }
-            }
-        }
         stage ('Build App Image') {
             steps {
                 script {
@@ -100,17 +83,10 @@ pipeline {
                 }
             }
         }
-        /*stage ('Deploy Image to ECS') {
+        stage ('Deploy Image to ECS') {
             steps {
                 withAWS(credentials: 'JenkinsAWSCLI', region: "${awsRegion}") {
                     sh 'aws ecs update-service --cluster ${cluster} --service ${service} --force-new-deployment'
-                }
-            }
-        }*/
-        stage('ArtifactUpload') {
-            steps {
-                script {
-                    gv.pushNexus()
                 }
             }
         }
