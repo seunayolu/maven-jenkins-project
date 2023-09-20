@@ -42,26 +42,6 @@ pipeline {
                 }
             }
         }
-        /*stage ('UNIT TEST') {
-            steps {
-                script {
-                    echo "Code Testing"
-                    gv.unitTest()
-                }
-            }
-        }
-        stage ('Checkstyle Analysis') {
-            steps {
-                script {
-                    gv.checkstyle()
-                }
-            }
-            post {
-                success {
-                    echo 'Generated Analysis Result'
-                }
-            }
-        }*/
         stage ('Build App Image') {
             steps {
                 script {
