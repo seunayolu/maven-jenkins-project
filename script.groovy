@@ -29,20 +29,20 @@ def pushImage() {
     }
 }
 
-/*def provisionServer() {
+def provisionServer() {
     withAWS(credentials: 'JenkinsAWSCLI', region: "${awsRegion}") {
         dir('terraform') {
             sh 'terraform init'
             sh 'terraform apply --auto-approve'
-            env.EKS_CLUSTER_ENDPOINT = sh(
+            EKS_CLUSTER_ENDPOINT = sh(
                 script: "terraform output cluster_endpoint",
                 returnStdout: true
-            ).trim()
+            )
         }
     }
-}*/
+}
 
-def provisionServer() {
+/*def provisionServer() {
     try {
         withAWS(credentials: 'JenkinsAWSCLI', region: "${awsRegion}") {
             dir('terraform') {
@@ -66,7 +66,7 @@ def provisionServer() {
     } finally {
         // Clean up or manage workspace as needed
     }
-}
+}*/
 
 
 
