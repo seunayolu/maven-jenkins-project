@@ -34,8 +34,8 @@ def provisionServer() {
         dir('terraform') {
             sh 'terraform init'
             sh 'terraform apply --auto-approve'
-            EKS_CLUSTER_ENDPOINT = sh(
-                script: "terraform output cluster_endpoint",
+            EKS_CLUSTER_NAME = sh(
+                script: "terraform output cluster_name",
                 returnStdout: true
             ).trim()
         }
@@ -43,10 +43,10 @@ def provisionServer() {
 }
 
 def connectK8s() {
-    echo "${EKS_CLUSTER_ENDPOINT}"
-    
+    echo "${EKS_CLUSTER_NAME}"
+
     withAWS(credentials: 'JenkinsAWSCLI', region: "${awsRegion}") {
-        sh "aws eks update-kubeconfig --name ${EKS_CLUSTER_ENDPOINT} --region ${awsRegion}"
+        sh "aws eks update-kubeconfig --name ${EKS_CLUSTER_NAME} --region ${awsRegion}"
         sh 'kubectl get nodes'
     }
 }
