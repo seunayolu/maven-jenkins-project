@@ -5,7 +5,7 @@ def fetchCode() {
 
 def buildWar() {
     echo "Building WAR with Maven"
-    sh 'mvn install -DskipTests'
+    sh 'mvn clean install -DskipTests'
 } 
 
 /*def unitTest() {
