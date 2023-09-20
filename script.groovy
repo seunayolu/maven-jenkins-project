@@ -29,7 +29,7 @@ def pushImage() {
     }
 }
 
-def provisionServer() {
+/*def provisionServer() {
     withAWS(credentials: 'JenkinsAWSCLI', region: "${awsRegion}") {
         dir('terraform') {
             sh 'terraform init'
@@ -40,14 +40,42 @@ def provisionServer() {
             ).trim()
         }
     }
+}*/
+
+def provisionServer() {
+    try {
+        withAWS(credentials: 'JenkinsAWSCLI', region: "${awsRegion}") {
+            dir('terraform') {
+                sh 'terraform init'
+                sh 'terraform apply --auto-approve'
+                EKS_CLUSTER_ENDPOINT = sh(
+                    script: "terraform output cluster_endpoint -json",
+                    returnStatus: true
+                ).trim()
+                
+                if (EKS_CLUSTER_ENDPOINT) {
+                    echo "EKS Cluster Endpoint: ${EKS_CLUSTER_ENDPOINT}"
+                } else {
+                    error "Failed to retrieve EKS Cluster Endpoint."
+                }
+            }
+        }
+    } catch (Exception e) {
+        currentBuild.result = 'FAILURE'
+        error "An error occurred during server provisioning: ${e.message}"
+    } finally {
+        // Clean up or manage workspace as needed
+    }
 }
+
+
 
 def connectK8s() {
     echo "waiting for eks cluster to be in the active state"
 
     echo "${EKS_CLUSTER_ENDPOINT}"
 
-    sleep(time: 20, unit: "MINUTES")
+    // sleep(time: 20, unit: "MINUTES")
 
     withAWS(credentials: 'JenkinsAWSCLI', region: "${awsRegion}") {
         sh "aws eks update-kubeconfig --name ${EKS_CLUSTER_ENDPOINT} --region ${awsRegion}"
