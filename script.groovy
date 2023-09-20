@@ -49,7 +49,7 @@ def provisionServer() {
                 sh 'terraform init'
                 sh 'terraform apply --auto-approve'
                 EKS_CLUSTER_ENDPOINT = sh(
-                    script: "terraform output cluster_endpoint -json",
+                    script: "terraform output cluster_endpoint",
                     returnStatus: true
                 ).trim()
                 
