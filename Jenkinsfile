@@ -88,7 +88,7 @@ pipeline {
         stage ('Connect to AWS EKS') {
             steps {
                 script {
-                    gv.connectK8s{}
+                    gv.connectK8s()
                 }
             }
         }
