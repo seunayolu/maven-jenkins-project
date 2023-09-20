@@ -30,16 +30,15 @@ def pushImage() {
 }
 
 def provisionServer() {
-    environment {
-        AWS_KEY = credentials('JenkinsAWSCLI')
-    }
-    dir('terraform') {
-        sh 'terraform init'
-        sh 'terraform apply --auto-approve'
-        env.EKS_CLUSTER_ENDPOINT = sh(
-            script: "terraform output cluster_endpoint",
-            returnStdout: true
-        ).trim()
+    withAWS(credentials: 'JenkinsAWSCLI', region: "${awsRegion}") {
+        dir('terraform') {
+            sh 'terraform init'
+            sh 'terraform apply --auto-approve'
+            env.EKS_CLUSTER_ENDPOINT = sh(
+                script: "terraform output cluster_endpoint",
+                returnStdout: true
+            ).trim()
+        }
     }
 }
 
@@ -49,12 +48,11 @@ def connectK8s() {
     echo "${EKS_CLUSTER_ENDPOINT}"
 
     sleep(time: 20, unit: "MINUTES")
-    
-    environment {
-        AWS_KEY = credentials('JenkinsAWSCLI')
+
+    withAWS(credentials: 'JenkinsAWSCLI', region: "${awsRegion}") {
+        sh "aws eks update-kubeconfig --name ${EKS_CLUSTER_ENDPOINT} --region ${awsRegion}"
+        sh 'kubectl get nodes'
     }
-    sh "aws eks update-kubeconfig --name ${EKS_CLUSTER_ENDPOINT} --region ${awsRegion}"
-    sh 'kubectl get nodes'
 }
 
 return this
