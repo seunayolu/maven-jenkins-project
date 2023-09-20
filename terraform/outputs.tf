@@ -12,7 +12,3 @@ output "region" {
   description = "Amazon Web Service EKS Cluster region"
   value = var.region
 }
-
-output "kubeconfig" {
-  value = module.eks.kubeconfig
-}
