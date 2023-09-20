@@ -37,7 +37,7 @@ def provisionServer() {
             EKS_CLUSTER_ENDPOINT = sh(
                 script: "terraform output cluster_endpoint",
                 returnStdout: true
-            )
+            ).trim()
         }
     }
 }
@@ -71,12 +71,6 @@ def provisionServer() {
 
 
 def connectK8s() {
-    echo "waiting for eks cluster to be in the active state"
-
-    echo "${EKS_CLUSTER_ENDPOINT}"
-
-    // sleep(time: 20, unit: "MINUTES")
-
     withAWS(credentials: 'JenkinsAWSCLI', region: "${awsRegion}") {
         sh "aws eks update-kubeconfig --name ${EKS_CLUSTER_ENDPOINT} --region ${awsRegion}"
         sh 'kubectl get nodes'
