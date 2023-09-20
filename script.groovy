@@ -48,6 +48,7 @@ def connectK8s() {
     withAWS(credentials: 'JenkinsAWSCLI', region: "${awsRegion}") {
         sh "aws eks update-kubeconfig --name ${EKS_CLUSTER_NAME} --region ${awsRegion}"
         sh 'kubectl get nodes'
+        sh 'kubectl apply -f app.yaml'
     }
 }
 

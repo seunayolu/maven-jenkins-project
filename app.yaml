@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: devopsacad-app
-        image: 392102158411.dkr.ecr.us-east-2.amazonaws.com/devopsacad-d-image
+        image: 392102158411.dkr.ecr.eu-central-1.amazonaws.com/devopsacad-d-image
         ports:
         - containerPort: 8080
 ---
