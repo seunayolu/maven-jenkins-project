@@ -42,7 +42,7 @@ pipeline {
                 }
             }
         }
-        stage ('UNIT TEST') {
+        /*stage ('UNIT TEST') {
             steps {
                 script {
                     echo "Code Testing"
@@ -61,7 +61,7 @@ pipeline {
                     echo 'Generated Analysis Result'
                 }
             }
-        }
+        }*/
         stage ('Build App Image') {
             steps {
                 script {

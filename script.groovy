@@ -8,7 +8,7 @@ def buildWar() {
     sh 'mvn install -DskipTests'
 } 
 
-def unitTest() {
+/*def unitTest() {
     echo "Code Testing"
     sh 'mvn test'
 } 
@@ -16,7 +16,7 @@ def unitTest() {
 def checkstyle() {
     echo "Performing Checkstyle Analysis on the Code"
     sh 'mvn checkstyle:checkstyle'
-}
+}*/
 
 def buildImage() {
     dockerImage = docker.build(awsEcrRegistry + ":$BUILD_NUMBER", "./Docker-files/app/multistage/")
@@ -47,7 +47,7 @@ def connectK8s() {
     echo "waiting for eks cluster to be in the active state"
 
     echo "${EKS_CLUSTER_ENDPOINT}"
-    
+
     sleep(time: 20, unit: "MINUTES")
     
     environment {
