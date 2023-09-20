@@ -1,19 +1,12 @@
 def gv
 
-def COLOR_MAP = [
-    'SUCCESS': 'good', 
-    'FAILURE': 'danger',
-]
-
 pipeline {
     agent any
     environment {
-        awsEcrCreds = 'ecr:us-east-2:JenkinsAWSCLI'
-        awsEcrRegistry =  "392102158411.dkr.ecr.us-east-2.amazonaws.com/devopsacad-d-image"
-        devopsacadEcrImgReg = "https://392102158411.dkr.ecr.us-east-2.amazonaws.com"
-        cluster = "classecstest"
-        service = "classtasksvc"
-        awsRegion = "us-east-2"
+        awsEcrCreds = 'ecr:eu-central-1:JenkinsAWSCLI'
+        awsEcrRegistry =  "392102158411.dkr.ecr.eu-central-1.amazonaws.com/devopsacad-d-image"
+        devopsacadEcrImgReg = "392102158411.dkr.ecr.eu-central-1.amazonaws.com"
+        awsRegion = "eu-central-1"
     }
     tools {
         maven "MAVEN3"
@@ -83,21 +76,23 @@ pipeline {
                 }
             }
         }
-        stage ('Deploy Image to ECS') {
+
+        stage ('Provision EKS') {
             steps {
-                withAWS(credentials: 'JenkinsAWSCLI', region: "${awsRegion}") {
-                    sh 'aws ecs update-service --cluster ${cluster} --service ${service} --force-new-deployment'
+                script {
+                    gv.provisionServer()
+                }
+            }
+        }
+
+        stage ('Connect to AWS EKS') {
+            steps {
+                script {
+                    gv.connectK8s{}
                 }
             }
         }
         
     }
-    post {
-        always {
-            echo 'Slack Notifications'
-            slackSend channel: 'general',
-                color: COLOR_MAP [currentBuild.currentResult],
-                message: "*${currentBuild.currentResult}: * Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}-${env.BUILD_TIMESTAMP} \n More info at: ${env.BUILD_URL}"
-        }
-    }
+
 }

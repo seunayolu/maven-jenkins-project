@@ -3,3 +3,4 @@ variable "private_subnet_cidr_blocks" {}
 variable "public_subnet_cidr_blocks" {}
 variable "region" {}
 variable "clusterName" {}
+variable "VpcName" {}
