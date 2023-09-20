@@ -5,7 +5,7 @@ pipeline {
     environment {
         awsEcrCreds = 'ecr:eu-central-1:JenkinsAWSCLI'
         awsEcrRegistry =  "392102158411.dkr.ecr.eu-central-1.amazonaws.com/devopsacad-d-image"
-        devopsacadEcrImgReg = "392102158411.dkr.ecr.eu-central-1.amazonaws.com"
+        devopsacadEcrImgReg = "https://392102158411.dkr.ecr.eu-central-1.amazonaws.com"
         awsRegion = "eu-central-1"
     }
     tools {
