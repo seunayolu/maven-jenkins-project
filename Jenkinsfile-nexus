@@ -1,0 +1,47 @@
+pipeline {
+    agent any
+    tools {
+        maven "MAVEN3"
+        jdk "oracleJDK8"
+    }
+    stages {
+        stage ('fetch code') {
+            steps {
+                script {
+                    echo "Pull Source code from Git"
+                    git branch: 'docker', url: 'https://github.com/seunayolu/maven-jenkins-project.git'
+                }
+            }
+        }
+        stage ('Build App') {
+            steps {
+                script {
+                    echo "Building WAR with Maven"
+                    sh 'mvn clean install -DskipTests'
+                }
+            }
+        }
+
+        stage('ArtifactUpload') {
+            steps {
+                script {
+                    nexusArtifactUploader(
+                        nexusVersion: 'nexus3',
+                        protocol: 'http',
+                        nexusUrl: '192.168.40.7:8081',
+                        groupId: 'com.devopsacad',
+                        version: "${env.BUILD_ID}-${env.BUILD_TIMESTAMP}",
+                        repository:'devopsacad',
+                        credentialsId: 'nexuslogin',
+                        artifacts: [
+                            [artifactId:'devopsacad',
+                            classifer: '',
+                            file: 'target/devopsacad-v2.war',
+                            type: 'war']
+                            ]
+                    )
+                }
+            }
+        }
+    }
+}
