@@ -7,12 +7,12 @@ pipeline {
     }
 
     environment {
-        awsEcrCreds = 'ecr:us-east-2:JenkinsAWSCLI'
-        awsEcrRegistry =  "392102158411.dkr.ecr.us-east-2.amazonaws.com/devopsacad-d-image"
-        devopsacadEcrImgReg = "https://392102158411.dkr.ecr.us-east-2.amazonaws.com"
-        awsRegion = 'us-east-2'
-        cluster = 'webapp-cluster'
-        service = 'webapp'
+        awsEcrCreds = 'ecr:eu-west-2:JenkinsAWSCLI'
+        awsEcrRegistry =  "392102158411.dkr.ecr.eu-west-2.amazonaws.com/devopsacad-d-image"
+        devopsacadEcrImgReg = "https://392102158411.dkr.ecr.eu-west-2.amazonaws.com"
+        awsRegion = 'eu-west-2'
+        cluster = 'webapp'
+        service = 'webapp-svc'
     }
 
     stages {
