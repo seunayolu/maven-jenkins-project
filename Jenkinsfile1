@@ -1,127 +1,66 @@
-def gv
-
 def COLOR_MAP = [
     'SUCCESS': 'good', 
     'FAILURE': 'danger',
 ]
-
 pipeline {
     agent any
+
+    tools {
+        maven "MAVEN3"
+        jdk "oracleJDK8"
+    }
+
     environment {
         awsEcrCreds = 'ecr:us-east-2:JenkinsAWSCLI'
         awsEcrRegistry =  "392102158411.dkr.ecr.us-east-2.amazonaws.com/devopsacad-d-image"
         devopsacadEcrImgReg = "https://392102158411.dkr.ecr.us-east-2.amazonaws.com"
-        cluster = "classecstest"
-        service = "classtasksvc"
-        awsRegion = "us-east-2"
     }
-    tools {
-        maven "MAVEN3"
-        jdk "OracleJDK8"
-    }
+
     stages {
-        stage ("init") {
+        stage ('fetch code') {
             steps {
                 script {
-                    gv = load "script.groovy"
+                    echo "Pull Source code from Git"
+                    git branch: 'docker', url: 'https://github.com/seunayolu/maven-jenkins-project.git'
                 }
             }
         }
-        stage ('Fetch Code') {
+
+        stage ('Build App') {
             steps {
                 script {
-                    echo "Fetching Code from GIT"
-                    gv.fetchCode()
+                    echo "Building WAR with Maven"
+                    sh 'mvn install -DskipTests'
                 }
             }
         }
-        stage ('Build') {
+
+        stage ('Build Docker Image') {
             steps{
                 script {
-                    echo "Building the WAR file"
-                    gv.buildWar()
-                }
-            }
-            post {
-                success {
-                    echo 'Archiving artifacts now.'
-                    archiveArtifacts artifacts: '**/*.war'
+                    dockerImage = docker.build(awsEcrRegistry + ":$BUILD_NUMBER", "./Docker-files/app/multistage/")
                 }
             }
         }
-        stage ('UNIT TEST') {
-            steps {
-                script {
-                    echo "Code Testing"
-                    gv.unitTest()
-                }
-            }
-        }
-        stage ('Checkstyle Analysis') {
-            steps {
-                script {
-                    gv.checkstyle()
-                }
-            }
-            post {
-                success {
-                    echo 'Generated Analysis Result'
-                }
-            }
-        }
-        stage('Sonar Analysis') {
-            environment {
-                ScannerHome = tool 'sonar4.7'
-            }
-            steps{
-                script {
-                    gv.sonarAnalysis()
-                }
-            }
-        }
-        stage('Quality Gate') {
-            steps {
-                script {
-                    gv.qualityGate()
-                }
-            }
-        }
-        stage ('Build App Image') {
-            steps {
-                script {
-                    gv.buildImage()
-                }
-            }
-        }
+
         stage ('Push Image to ECR') {
-            steps {
+            steps{
                 script {
-                    gv.pushImage()
+                    docker.withRegistry (devopsacadEcrImgReg, awsEcrCreds) {
+                        dockerImage.push ("$BUILD_NUMBER")
+                        dockerImage.push ('latest')
+                    }
                 }
             }
         }
-        /*stage ('Deploy Image to ECS') {
-            steps {
-                withAWS(credentials: 'JenkinsAWSCLI', region: "${awsRegion}") {
-                    sh 'aws ecs update-service --cluster ${cluster} --service ${service} --force-new-deployment'
-                }
-            }
-        }*/
-        stage('ArtifactUpload') {
-            steps {
-                script {
-                    gv.pushNexus()
-                }
-            }
-        }
-        
     }
+    
     post {
         always {
-            echo 'Slack Notifications'
-            slackSend channel: 'general',
-                color: COLOR_MAP [currentBuild.currentResult],
-                message: "*${currentBuild.currentResult}: * Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}-${env.BUILD_TIMESTAMP} \n More info at: ${env.BUILD_URL}"
+            echo 'Slack Notifications.'
+            slackSend channel: '#jenkinscicd',
+                color: COLOR_MAP[currentBuild.currentResult],
+                message: "*${currentBuild.currentResult}:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} \n More info at: ${env.BUILD_URL}"
         }
     }
 }
